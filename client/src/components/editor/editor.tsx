@@ -16,7 +16,7 @@ const Editor = () => {
         <div
             style={{ minHeight: "calc(100vh - 66px)" }}
             className={clsx(
-                "h-full mr-[385px] flex-1 overflow-auto bg-background transition-all rounded-md",
+                "h-full flex-1 overflow-auto bg-neutral-100 transition-all rounded-md",
                 {
                     "!w-[850px]": state.deviceType === "Tablet",
                     "!w-[420px]": state.deviceType === "Mobile",

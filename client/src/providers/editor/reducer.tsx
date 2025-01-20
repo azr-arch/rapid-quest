@@ -4,6 +4,7 @@ import { Editor, EditorElement, initialState } from "./provider";
 const addAnElement = (state: EditorElement[], action: EditorActions): EditorElement[] => {
     if (action.type !== "ADD_ELEMENT")
         throw Error("You sent the wrong action type to the Add Element editor State");
+
     return state.map((item) => {
         if (item.id === action.payload.containerId && Array.isArray(item.content)) {
             return {
@@ -41,15 +42,15 @@ const deleteElement = (state: EditorElement[], action: EditorActions): EditorEle
     if (action.type !== "DELETE_ELEMENT")
         throw Error("You sent the wrong action type to the Update Element editor State");
 
-    return state.filter((item) => {
+    return state.reduce((acc, item) => {
         if (item.id === action.payload.elementDetails.id) {
-            return false;
+            return acc; // Skip the item to be deleted
         } else if (item.content && Array.isArray(item.content)) {
-            return deleteElement(item.content, action);
+            // Recursively delete elements in nested content
+            return [...acc, { ...item, content: deleteElement(item.content, action) }];
         }
-
-        return true;
-    });
+        return [...acc, item];
+    }, [] as EditorElement[]);
 };
 
 export const editorReducer = (state: Editor = initialState, action: EditorActions) => {

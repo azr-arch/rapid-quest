@@ -2,6 +2,8 @@ import { EditorElement, useEditor } from "@/providers/editor/provider";
 import clsx from "clsx";
 import { Badge, Trash } from "lucide-react";
 
+// Fix link rendering
+
 export const LinkComponent = ({ element }: { element: EditorElement }) => {
     const { state, dispatch } = useEditor();
     const styles = element.styles;
@@ -15,15 +17,32 @@ export const LinkComponent = ({ element }: { element: EditorElement }) => {
         });
     };
 
+    const handleOnClickElement = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        dispatch({
+            type: "CHANGE_CLICKED_ELEMENT",
+            payload: {
+                elementDetails: element,
+            },
+        });
+    };
+
+    const handleDragStart = (e: React.DragEvent, type: string) => {
+        if (type === null) return;
+        console.log("Draggin link ");
+
+        e.dataTransfer.setData("componentType", type);
+    };
+
     return (
         <div
             style={styles}
             draggable
-            // onDragStart={(e) => handleDragStart(e, "text")}
-            // onClick={handleOnClickBody}
+            onDragStart={(e) => handleDragStart(e, "link")}
             className={clsx("p-[2px] w-full m-[5px] relative text-[16px] transition-all", {
                 "!border-blue-500 border-solid": state.selectedElement.id === element.id,
             })}
+            onClick={handleOnClickElement}
         >
             {state.selectedElement.id === element.id && (
                 <Badge className="absolute -top-[23px] -left-[1px] rounded-none rounded-t-lg ">

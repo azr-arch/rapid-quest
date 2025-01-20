@@ -8,7 +8,10 @@ export const EmailEditor = () => {
         <EditorProvider>
             <Header />
             {/* Editor content */}
-            <div className="w-full h-full flex items-center mr-[385px] border border-neutral-300 ">
+            <div
+                style={{ width: "calc(100vw - 390px)" }}
+                className="  w-full h-full flex items-center border border-neutral-300 "
+            >
                 <Editor />
             </div>
             <Sidebar />

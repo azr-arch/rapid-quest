@@ -1,7 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DeviceTypes, useEditor } from "@/providers/editor/provider";
 
 export const Header = () => {
+    const { state, dispatch } = useEditor();
+
+    const handleChange = (value: string) => {
+        dispatch({
+            type: "CHANGE_DEVICE",
+            payload: {
+                device: value as DeviceTypes,
+            },
+        });
+    };
+
     return (
         <header className="h-16 flex items-center justify-between px-4">
             <div>
@@ -9,11 +21,11 @@ export const Header = () => {
             </div>
             <nav className="flex items-center py-4 px-2">
                 <aside className="ml-auto flex items-center gap-2">
-                    <Tabs defaultValue="desktop">
+                    <Tabs value={state.deviceType} onValueChange={handleChange}>
                         <TabsList>
-                            <TabsTrigger value="desktop">Desktop</TabsTrigger>
-                            <TabsTrigger value="tab">Tab</TabsTrigger>
-                            <TabsTrigger value="mobile">Mobile</TabsTrigger>
+                            <TabsTrigger value="Desktop">Desktop</TabsTrigger>
+                            <TabsTrigger value="Tab">Tab</TabsTrigger>
+                            <TabsTrigger value="Mobile">Mobile</TabsTrigger>
                         </TabsList>
                     </Tabs>
 

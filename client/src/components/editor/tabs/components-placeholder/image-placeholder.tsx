@@ -1,4 +1,4 @@
-import { ImageIcon } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 
 const ImagePlaceholder = () => {
     return (
@@ -9,7 +9,7 @@ const ImagePlaceholder = () => {
             //   }}
             className=" h-14 w-14 bg-muted rounded-lg flex items-center justify-center"
         >
-            <ImageIcon size={40} className="text-muted-foreground" />
+            <ImagePlus size={40} className="text-muted-foreground" />
         </div>
     );
 };

@@ -8,17 +8,17 @@ export const Recursive = ({ element }: { element: EditorElement }) => {
         text: TextComponent,
         link: LinkComponent,
         container: ContainerComponent,
+        __body: ContainerComponent,
         // image: ImageComponent, // Add the ImageComponent here
     };
 
-    // Get the component based on the type
+    // Getting the component based upon type
     const Component = element.type && typeToComponent[element.type];
 
-    // Handle missing or unknown types
     if (!Component) {
         return null;
     }
 
-    // Render the component
+    // Rendering the component with its props
     return <Component element={element} />;
 };
