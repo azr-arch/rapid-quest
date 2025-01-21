@@ -145,7 +145,7 @@ export const ContainerComponent = ({ element }: { element: EditorElement }) => {
             }}
             className={clsx("relative h-full px-4 py-7 transition-all group bg-cover bg-center", {
                 "max-w-full w-full border border-neutral-400 ": type === "container",
-                "h-full": type === "__body",
+                "h-__body  border-2 border-red-300": type === "__body",
                 "overflow-hidden": type === "__body",
                 // 'flex flex-col md:!flex-row': type === '2Col',
                 "!border-blue-500 border":
