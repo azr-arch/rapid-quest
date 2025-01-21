@@ -64,9 +64,9 @@ export const Header = () => {
 
             <div className="flex items-center gap-2">
                 {/* Not working yet! */}
-                <Button disabled={true} className="">
+                {/* <Button disabled={true} className="">
                     Fetch Layout
-                </Button>
+                </Button> */}
 
                 <Button disabled={loading} onClick={onSave} className="">
                     Save
