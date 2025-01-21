@@ -1,18 +1,35 @@
 import express from "express";
 import path from "path";
+import cors from "cors";
 
 import { router as templateRoutes } from "./routes/template.routes";
+import { createRouteHandler } from "uploadthing/express";
+import { uploadRouter } from "./uploadthings";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
 
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(cors());
 
 // Routes
 app.use("/api", templateRoutes);
+// app.use("/api", uploadRoutes);
+app.use(
+    "/api/upload",
+    createRouteHandler({
+        router: uploadRouter,
+        config: {
+            token: process.env.UPLOADTHING_TOKEN,
+            isDev: process.env.NODE_ENV === "development",
+        },
+    })
+);
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
     res.send({ ping: "pong" });
 });
 

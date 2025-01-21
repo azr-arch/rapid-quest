@@ -1,17 +1,59 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DeviceTypes, useEditor } from "@/providers/editor/provider";
+import { downloadHtml, generateHtmlFromState } from "@/lib/utils";
+import { useEditor } from "@/providers/editor/provider";
+import { useState } from "react";
 
 export const Header = () => {
-    const { state, dispatch } = useEditor();
+    const { state } = useEditor();
+    const [loading, setLoading] = useState(false);
 
-    const handleChange = (value: string) => {
-        dispatch({
-            type: "CHANGE_DEVICE",
-            payload: {
-                device: value as DeviceTypes,
-            },
-        });
+    const onSave = async () => {
+        const htmlContent = generateHtmlFromState(state.elements);
+        try {
+            setLoading(true);
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/uploadEmailLayout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ html: htmlContent }),
+            });
+
+            console.log("saving this: ", htmlContent);
+
+            alert("Layout saved on backend");
+        } catch (error) {
+            console.error("Error saving layout:", error);
+            console.error("Failed to save layout.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Not working
+    // const onFetch = async () => {
+    //     try {
+    //         setLoading(true);
+    //         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/getEmailLayout`);
+    //         const { html } = await response.json();
+
+    //         if (!html) {
+    //             throw new Error("Invalid layout data");
+    //         }
+
+    //         console.log("getting this : ", html);
+    //     } catch (error) {
+    //         console.error("Error fetching layout:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const onDownload = () => {
+        const htmlString = generateHtmlFromState(state.elements);
+        setLoading(true);
+        downloadHtml(htmlString);
+        setLoading(false);
     };
 
     return (
@@ -19,19 +61,20 @@ export const Header = () => {
             <div>
                 <p className="text-2xl font-medium">Email Editor</p>
             </div>
-            <nav className="flex items-center py-4 px-2">
-                <aside className="ml-auto flex items-center gap-2">
-                    <Tabs value={state.deviceType} onValueChange={handleChange}>
-                        <TabsList>
-                            <TabsTrigger value="Desktop">Desktop</TabsTrigger>
-                            <TabsTrigger value="Tab">Tab</TabsTrigger>
-                            <TabsTrigger value="Mobile">Mobile</TabsTrigger>
-                        </TabsList>
-                    </Tabs>
 
-                    <Button className="ml-2">Save</Button>
-                </aside>
-            </nav>
+            <div className="flex items-center gap-2">
+                {/* Not working yet! */}
+                <Button disabled={true} className="">
+                    Fetch Layout
+                </Button>
+
+                <Button disabled={loading} onClick={onSave} className="">
+                    Save
+                </Button>
+                <Button disabled={loading} onClick={onDownload} className="">
+                    Download
+                </Button>
+            </div>
         </header>
     );
 };

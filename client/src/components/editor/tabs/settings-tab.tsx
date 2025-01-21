@@ -37,6 +37,7 @@ const SettingsTab = () => {
     const handleOnChanges = (e: any) => {
         const styleSettings = e.target.id;
         let value = e.target.value;
+
         const styleObject = {
             [styleSettings]: value,
         };
@@ -56,7 +57,7 @@ const SettingsTab = () => {
     };
 
     return (
-        <Accordion type="multiple" className="w-full">
+        <Accordion type="multiple" className="w-full overflow-auto">
             <AccordionItem value="Typography" className="px-6 mt-0 border-y-[1px]">
                 <AccordionTrigger className="!no-underline">Typography</AccordionTrigger>
                 <AccordionContent className="px-2 flex flex-col gap-2">
@@ -176,7 +177,7 @@ const SettingsTab = () => {
                         </Label>
                         <div className="flex  border-[1px] rounded-md overflow-clip">
                             <Input
-                                placeholder="#HFI245"
+                                placeholder="url(example.com/jpg)"
                                 className="!border-y-0 rounded-none !border-r-0 mr-2  focus-visible:ring-0"
                                 id="backgroundImage"
                                 onChange={handleOnChanges}

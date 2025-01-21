@@ -28,9 +28,17 @@ export const ContainerComponent = ({ element }: { element: EditorElement }) => {
         });
     };
 
-    const handleDragStart = (e: React.DragEvent, type: string) => {
+    const handleDragStart = (_: React.DragEvent, type: string) => {
         if (type === "__body") return;
-        e.dataTransfer.setData("componentType", type);
+
+        // Part of reorder feature
+        // e.dataTransfer.setData(
+        //     "componentType",
+        //     JSON.stringify({
+        //         type,
+        //         elementId: state.selectedElement.id,
+        //     })
+        // );
     };
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -38,66 +46,95 @@ export const ContainerComponent = ({ element }: { element: EditorElement }) => {
     };
 
     const handleOnDrop = (e: React.DragEvent, id: string) => {
+        // This makes sure that element is added to the target only, not the parent
         e.stopPropagation();
-        const componentType = e.dataTransfer.getData("componentType") as ElementType;
 
-        switch (componentType) {
-            case "text":
-                dispatch({
-                    type: "ADD_ELEMENT",
-                    payload: {
-                        containerId: id,
-                        elementDetails: {
-                            content: { innerText: "Text Element" },
-                            id: v4(),
-                            type: "text",
-                            styles: {
-                                color: "black",
-                                ...defaultStyles,
+        // Part of reorder feature
+        // const boundingReact = target.getBoundingClientRect();
+        // const mouseY = e.clientY;
+        // const threshold = boundingReact.top + boundingReact.height / 2;
+        // const dropPosition = mouseY < threshold ? "before" : "after";
+
+        // // Check if data is combing from handleDragStart which have json string
+        // const isExistingElement = isJsonString(e.dataTransfer.getData("componentType"));
+        try {
+            // if (isExistingElement) {
+            //     const { elementId } = JSON.parse(e.dataTransfer.getData("componentType"));
+
+            //     console.log("Dropping : ", isExistingElement, dropPosition, id, elementId);
+            //     dispatch({
+            //         type: "REODER_ELEMENT",
+            //         payload: {
+            //             targetId: id,
+            //             elementId,
+            //             position: dropPosition,
+            //         },
+            //     });
+            //     return;
+            // } else {
+            const componentType = e.dataTransfer.getData("componentType") as ElementType;
+
+            switch (componentType) {
+                case "text":
+                    dispatch({
+                        type: "ADD_ELEMENT",
+                        payload: {
+                            containerId: id,
+                            elementDetails: {
+                                content: { innerText: "Text Element" },
+                                id: v4(),
+                                type: "text",
+                                styles: {
+                                    color: "black",
+                                    ...defaultStyles,
+                                },
+                                name: "Text",
                             },
-                            name: "Text",
                         },
-                    },
-                });
-                break;
-            case "container":
-                dispatch({
-                    type: "ADD_ELEMENT",
-                    payload: {
-                        containerId: id,
-                        elementDetails: {
-                            content: [],
-                            id: v4(),
-                            type: "container",
-                            styles: {
-                                ...defaultStyles,
+                    });
+                    break;
+                case "container":
+                    dispatch({
+                        type: "ADD_ELEMENT",
+                        payload: {
+                            containerId: id,
+                            elementDetails: {
+                                content: [],
+                                id: v4(),
+                                type: "container",
+                                styles: {
+                                    ...defaultStyles,
+                                },
+                                name: "Container",
                             },
-                            name: "Container",
                         },
-                    },
-                });
-                break;
-            case "link":
-                dispatch({
-                    type: "ADD_ELEMENT",
-                    payload: {
-                        containerId: id,
-                        elementDetails: {
-                            content: {
-                                innerText: "Link element",
-                                href: "#",
+                    });
+                    break;
+                case "link":
+                    dispatch({
+                        type: "ADD_ELEMENT",
+                        payload: {
+                            containerId: id,
+                            elementDetails: {
+                                content: {
+                                    innerText: "Link element",
+                                    href: "#",
+                                },
+                                id: v4(),
+                                type: "link",
+                                styles: {
+                                    color: "black",
+                                    ...defaultStyles,
+                                },
+                                name: "Link",
                             },
-                            id: v4(),
-                            type: "link",
-                            styles: {
-                                color: "black",
-                                ...defaultStyles,
-                            },
-                            name: "Link",
                         },
-                    },
-                });
-                break;
+                    });
+                    break;
+            }
+            // }
+        } catch (error) {
+            console.error("Error processing drop: ", error);
         }
     };
 
@@ -105,7 +142,6 @@ export const ContainerComponent = ({ element }: { element: EditorElement }) => {
         <div
             style={{
                 ...styles,
-                backgroundImage: `url(${styles.backgroundImage})`,
             }}
             className={clsx("relative h-full px-4 py-7 transition-all group bg-cover bg-center", {
                 "max-w-full w-full border border-neutral-400 ": type === "container",

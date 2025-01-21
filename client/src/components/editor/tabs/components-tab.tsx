@@ -5,9 +5,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import ContainerPlaceholder from "./components-placeholder/container-placeholder";
-import LinkPlaceholder from "./components-placeholder/link-placeholder";
 import TextPlaceholder from "./components-placeholder/text-placeholder";
-import ImagePlaceholder from "./components-placeholder/image-placeholder";
 
 const elements = [
     {
@@ -21,18 +19,6 @@ const elements = [
         label: "Container",
         id: "container",
         group: "layout",
-    },
-    {
-        Component: <LinkPlaceholder />,
-        label: "Link",
-        id: "link",
-        group: "elements",
-    },
-    {
-        Component: <ImagePlaceholder />,
-        label: "Image",
-        id: "image",
-        group: "elements",
     },
 ];
 const ComponentsTab = () => {

@@ -2,8 +2,6 @@ import { EditorElement, useEditor } from "@/providers/editor/provider";
 import clsx from "clsx";
 import { Trash } from "lucide-react";
 
-// A bug with this component, when text string is empty the span becomes undetectable almostly
-
 export const TextComponent = ({ element }: { element: EditorElement }) => {
     const { state, dispatch } = useEditor();
 
@@ -29,10 +27,28 @@ export const TextComponent = ({ element }: { element: EditorElement }) => {
         });
     };
 
+    const onBlur = (e: React.ChangeEvent) => {
+        const iElement = e.target as HTMLInputElement;
+
+        const newText = iElement.value || " "; // Placeholder text to avoid empty content
+
+        dispatch({
+            type: "UPDATE_ELEMENT",
+            payload: {
+                elementDetails: {
+                    ...element,
+                    content: {
+                        innerText: newText,
+                    },
+                },
+            },
+        });
+    };
+
     return (
         <div
             style={styles}
-            className={clsx("p-[2px] w-full m-[5px] relative text-[16px] transition-all", {
+            className={clsx("p-[2px] w-full m-[5px] relative text-[16px] transition-all border", {
                 "!border-blue-500": state.selectedElement.id === element.id,
 
                 "!border-solid": state.selectedElement.id === element.id,
@@ -40,12 +56,38 @@ export const TextComponent = ({ element }: { element: EditorElement }) => {
             })}
             onClick={handleOnClickElement}
         >
-            <span
+            {state.selectedElement.id === element.id && !Array.isArray(element.content) ? (
+                <input
+                    type="text"
+                    name=""
+                    id=""
+                    className="w-full"
+                    value={element.content.innerText}
+                    onChange={(e) => {
+                        dispatch({
+                            type: "UPDATE_ELEMENT",
+                            payload: {
+                                elementDetails: {
+                                    ...element,
+                                    content: {
+                                        innerText: e.target.value,
+                                    },
+                                },
+                            },
+                        });
+                    }}
+                    onBlur={onBlur}
+                />
+            ) : !Array.isArray(element.content) ? (
+                <p>{element.content.innerText}</p>
+            ) : null}
+
+            {/* <span
                 contentEditable="true"
-                className="relative"
+                className="relative w-full"
                 onBlur={(e) => {
                     const spanElement = e.target as HTMLSpanElement;
-                    const newText = spanElement.innerText.trim() || " "; // Placeholder text to avoid empty content
+                    const newText = spanElement.innerText.trim() || "placeholder"; // Placeholder text to avoid empty content
                     dispatch({
                         type: "UPDATE_ELEMENT",
                         payload: {
@@ -58,14 +100,14 @@ export const TextComponent = ({ element }: { element: EditorElement }) => {
                         },
                     });
                 }}
-            >
-                {!Array.isArray(element.content) && element.content.innerText}
-                {state.selectedElement.id === element.id && (
-                    <div className="absolute bg-primary px-2.5 py-1 text-xs font-bold -top-[25px] -right-[1px] rounded-none rounded-t-lg !text-white">
-                        <Trash className="cursor-pointer" size={16} onClick={handleDeleteElement} />
-                    </div>
-                )}
-            </span>
+            > */}
+            {/* {!Array.isArray(element.content) && element.content.innerText} */}
+            {/* </span> */}
+            {state.selectedElement.id === element.id && (
+                <div className="absolute bg-primary px-2.5 py-1 text-xs font-bold -top-[25px] -right-[1px] rounded-none rounded-t-lg !text-white">
+                    <Trash className="cursor-pointer" size={16} onClick={handleDeleteElement} />
+                </div>
+            )}
         </div>
     );
 };

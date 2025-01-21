@@ -1,5 +1,5 @@
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlusIcon, SettingsIcon } from "lucide-react";
+import { ImagePlusIcon, PlusIcon, SettingsIcon } from "lucide-react";
 
 export const MenuTabList = () => {
     return (
@@ -9,6 +9,9 @@ export const MenuTabList = () => {
             </TabsTrigger>
             <TabsTrigger value="components" className="data-[state=active]:bg-muted ">
                 <PlusIcon />
+            </TabsTrigger>
+            <TabsTrigger value="image-upload" className="data-[state=active]:bg-muted">
+                <ImagePlusIcon />
             </TabsTrigger>
         </TabsList>
     );

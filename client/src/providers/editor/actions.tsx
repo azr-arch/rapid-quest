@@ -44,6 +44,13 @@ export type EditorActions =
           type: "LOAD_DATA";
           payload: {
               elements: EditorElement[];
-              withLive: boolean;
+          };
+      }
+    | {
+          type: "REODER_ELEMENT";
+          payload: {
+              targetId: string;
+              elementId: string;
+              position: "before" | "after";
           };
       };
