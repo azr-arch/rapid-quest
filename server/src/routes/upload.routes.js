@@ -1,6 +1,6 @@
 import express from "express";
 import { createRouteHandler } from "uploadthing/express";
-import { uploadRouter } from "../uploadthings";
+import { uploadRouter } from "../uploadthings.js";
 
 const router = express.Router();
 

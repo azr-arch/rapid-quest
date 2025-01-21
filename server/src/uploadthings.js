@@ -1,4 +1,4 @@
-import { createUploadthing, type FileRouter } from "uploadthing/express";
+import { createUploadthing } from "uploadthing/express";
 
 const f = createUploadthing();
 
@@ -24,6 +24,4 @@ export const uploadRouter = {
 
             return { uploadedBy: "1234" };
         }),
-} satisfies FileRouter;
-
-export type OurFileRouter = typeof uploadRouter;
+};

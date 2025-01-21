@@ -1,9 +1,9 @@
 import path from "path";
-import { Request, Response } from "express";
 import fs from "fs";
+import { __dirname } from "../utils/dirname.js";
 
 const layoutPath = path.resolve(__dirname, "../template-layout/layout.html");
-function getLayout(_: Request, res: Response) {
+function getLayout(_, res) {
     // Currently This does not work on client
     fs.readFile(layoutPath, "utf-8", (err, data) => {
         if (err) {
@@ -15,7 +15,7 @@ function getLayout(_: Request, res: Response) {
     });
 }
 
-function uploadLayout(req: Request, res: Response) {
+function uploadLayout(req, res) {
     try {
         const { html } = req.body;
 

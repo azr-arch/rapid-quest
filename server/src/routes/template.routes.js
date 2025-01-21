@@ -1,7 +1,5 @@
 import express from "express";
-import { getLayout, uploadLayout } from "../controllers/template.controller";
-import fs from "fs";
-import path from "path";
+import { getLayout, uploadLayout } from "../controllers/template.controller.js";
 
 const router = express.Router();
 

@@ -2,10 +2,11 @@ import express from "express";
 import path from "path";
 import cors from "cors";
 
-import { router as templateRoutes } from "./routes/template.routes";
+import { router as templateRoutes } from "./routes/template.routes.js";
 import { createRouteHandler } from "uploadthing/express";
-import { uploadRouter } from "./uploadthings";
+import { uploadRouter } from "./uploadthings.js";
 import dotenv from "dotenv";
+import { __dirname } from "./utils/dirname.js";
 
 const app = express();
 dotenv.config();
