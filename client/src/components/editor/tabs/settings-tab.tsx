@@ -317,6 +317,13 @@ const SettingsTab = () => {
                     </div>
                 </AccordionContent>
             </AccordionItem>
+
+            {/* info */}
+            <p className="my-4 px-3 text-sm text-red-500">
+                Note: This project's server is hosted on a free tier, which means it may
+                automatically spin down during periods of inactivity. If you experience any delays,
+                please allow a minute or two for the server to restart. Thank you for your patience!{" "}
+            </p>
         </Accordion>
     );
 };
